@@ -1,0 +1,18 @@
+# Ignore all __pycache__ directories recursively
+__pycache__/
+
+# Ignore any compiled Python files that sneak out
+*.py[cod]
+*$py.class
+
+
+# Everything in these directories
+cdr_outputs/
+OLD_cdr_outputs/
+lib/
+
+# Ignore these files specifically
+discover.ipynb
+*.html
+notes.txt
+subscribers.json
