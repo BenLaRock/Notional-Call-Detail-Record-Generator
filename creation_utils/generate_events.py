@@ -12,8 +12,8 @@ def generate_cdr_events(subscriber, contacts, towers):
     events = []
     rules = assign_mobility_rules(subscriber)
 
+    print(len(contacts), 'contacts for subscriber ', subscriber.sid)
     for contact in contacts:
-
         # number of interactions per contact
         num_events = random.randint(MIN_EVENTS_PER_CONTACT, MAX_EVENTS_PER_CONTACT)
 
@@ -38,7 +38,7 @@ def generate_cdr_events(subscriber, contacts, towers):
                 "CalledNumber": contact.phone if direction == "MO" else subscriber.phone,
                 "DurationSec": random.randint(20, 600) if is_voice else "",
                 "SMSLength": random.randint(10, 160) if not is_voice else "",
-                "IMEI": random.randint(100000000000000, 999999999999999),
+                "IMEI": random.randint(100000000000000, 999999999999999), # long term, should not be random
                 "IMSI": random.randint(100000000000000, 999999999999999),
                 "CellTowerID": tower[0],
                 "TowerName": tower[1],

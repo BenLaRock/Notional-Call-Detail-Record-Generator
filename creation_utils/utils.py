@@ -21,3 +21,8 @@ def random_timestamp():
 
 def random_string(n=6):
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=n))
+
+COUNTRY_PHONE_MAP = {
+    "MX": random_phone_mx,
+    "US": random_phone_us,
+}

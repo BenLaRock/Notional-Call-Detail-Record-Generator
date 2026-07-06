@@ -1,4 +1,5 @@
 from datetime import datetime
+from creation_utils.subscribers import Subscriber
 
 # ----------------------------
 # Dataset Scope
@@ -13,11 +14,6 @@ SEED = 42  # reproducibility
 # Archetype counts
 # ----------------------------
 
-# NUM_REGIONAL_MANAGERS = 3
-# NUM_CROSS_BORDER_DRIVERS = 6
-# NUM_DC_MANAGERS = 4
-# NUM_LOCAL_DRIVERS = 6
-
 NUM_MX_DTO_LEADERSHIP = 3
 NUM_CROSS_BORDER_DRIVERS = 6
 NUM_US_DISTRIBUTORS = 4
@@ -27,11 +23,11 @@ NUM_US_PICKUP_DRIVERS = 6
 # Contact structure
 # ----------------------------
 
-MIN_CONTACTS = 30
-MAX_CONTACTS = 100
+MIN_CONTACTS = 10
+MAX_CONTACTS = 50
 
-MIN_EVENTS_PER_CONTACT = 3
-MAX_EVENTS_PER_CONTACT = 21
+MIN_EVENTS_PER_CONTACT = 15
+MAX_EVENTS_PER_CONTACT = 500
 
 # ----------------------------
 # Event composition
@@ -86,3 +82,93 @@ CELL_TOWERS_US_AZ = [
     ("US104", "Phoenix South", 33.4484, -112.0740, "US"),
     ("US105", "Phoenix West", 33.4480, -112.1030, "US"),
 ]
+
+ARCHETYPES = {
+    "MX_DTO_LEADER": {
+        "role": "MX_DTO_LEADER",
+        "role_max_allowed": NUM_MX_DTO_LEADERSHIP,
+        "role_id_prefix": "LEADER",
+        "role_countries": ["MX"],
+        "contacts_max_allowed": 2,
+        "contacts_id_prefix": "CONTACT",
+        "contacts_countries": ["MX", "US"],
+        "contacts_frequencies": ["REGULAR", "INFREQUENT", "SPORADIC"],
+        "create": Subscriber,
+    },
+    "CROSS_BORDER_DRIVER": {
+        "role": "CROSS_BORDER_DRIVER",
+        "role_max_allowed": NUM_CROSS_BORDER_DRIVERS,
+        "role_id_prefix": "DRIVER",
+        "role_countries": ["MX", "US"],
+        "contacts_max_allowed": 2,
+        "contacts_id_prefix": "CONTACT",
+        "contacts_countries": ["MX", "US"],
+        "contacts_frequencies": ["REGULAR", "INFREQUENT", "SPORADIC"],
+        "create": Subscriber,
+    },
+    "US_DISTRIBUTOR": {
+        "role": "US_DISTRIBUTOR",
+        "role_max_allowed": NUM_US_DISTRIBUTORS,
+        "role_id_prefix": "DISTRIBUTOR",
+        "role_countries": ["US"],
+        "contacts_max_allowed": 2,
+        "contacts_id_prefix": "CONTACT",
+        "contacts_countries": ["US", "MX"],
+        "contacts_frequencies": ["REGULAR", "INFREQUENT", "SPORADIC"],
+        "create": Subscriber,
+    },
+    "US_PICKUP_DRIVER": {
+        "role": "US_PICKUP_DRIVER",
+        "role_max_allowed": NUM_US_PICKUP_DRIVERS,
+        "role_id_prefix": "PICKUP",
+        "role_countries": ["US"],
+        "contacts_max_allowed": 2,
+        "contacts_id_prefix": "CONTACT",
+        "contacts_countries": ["US"],
+        "contacts_frequencies": ["REGULAR", "INFREQUENT", "SPORADIC"],
+        "create": Subscriber,
+    },
+}
+
+
+
+
+
+
+
+
+
+
+# ARCHETYPES = [
+#     {
+#         "role": "MX_DTO_LEADER",
+#         "max_allowed": NUM_MX_DTO_LEADERSHIP,
+#         "id_prefix": "LEADER",
+#         "create": Subscriber,
+#         "countries": ["MX"],
+#         "contacts_max_allowed": 2,
+#         "contacts_id_prefix": "CONTACT",
+#         "contacts_countries": ["MX", "US"],
+#     },
+#     {
+#         "role": "CROSS_BORDER_DRIVER",
+#         "max_allowed": NUM_CROSS_BORDER_DRIVERS,
+#         "id_prefix": "DRIVER",
+#         "create": Subscriber,
+#         "countries": ["MX", "US"],
+#     },
+#     {
+#         "role": "US_DISTRIBUTOR",
+#         "max_allowed": NUM_US_DISTRIBUTORS,
+#         "id_prefix": "DISTRIBUTOR",
+#         "create": Subscriber,
+#         "countries": ["US"],
+#     },
+#     {
+#         "role": "US_PICKUP_DRIVER",
+#         "max_allowed": NUM_US_PICKUP_DRIVERS,
+#         "id_prefix": "PICKUP",
+#         "create": Subscriber,
+#         "countries": ["US"],
+#     },
+# ]
