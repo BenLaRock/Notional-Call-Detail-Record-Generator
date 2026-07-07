@@ -1,6 +1,7 @@
-# analytics.py
-
 from collections import defaultdict
+import csv
+import os
+from creation_utils.constants import FULL_EXTRAS_OUTPUT_DIR
 
 def summarize(events):
     summary = defaultdict(int)
@@ -11,7 +12,7 @@ def summarize(events):
 
         if e["Direction"] == "MO":
             summary["outgoing"] += 1
-        else:
+        elif e["Direction"] == "MT":
             summary["incoming"] += 1
 
     return summary
@@ -19,7 +20,6 @@ def summarize(events):
 
 def build_summaries(subscriber_event_map):
     rows = []
-
     for sid, events in subscriber_event_map.items():
         s = summarize(events)
 
@@ -35,10 +35,11 @@ def build_summaries(subscriber_event_map):
     return rows
 
 
-def write_summaries(rows):
-    import csv
-
-    with open("output/summaries.csv", "w", newline="") as f:
+def export_summaries(rows):
+    os.makedirs(FULL_EXTRAS_OUTPUT_DIR, exist_ok=True)
+    filename = f"{FULL_EXTRAS_OUTPUT_DIR}/summaries.csv"
+    with open(filename, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=rows[0].keys())
         writer.writeheader()
         writer.writerows(rows)
+    return

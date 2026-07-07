@@ -1,49 +1,34 @@
-# from pathlib import Path
-# import sys
-# # navigate up two levels to reach 'root_project/'
-# root_dir = Path(__file__).resolve().parents[1]
-# sys.path.append(str(root_dir))
 import importlib
-
 # cdr creation utils
-from creation_utils.generate_subscribers import generate_subscribers
-from creation_utils.generate_contacts import build_contact_graph
+from creation_utils.subscribers import generate_subscribers
+from creation_utils.contacts import build_contact_graph
 from creation_utils.towers import generate_towers
-from creation_utils.generate_events import generate_cdr_events
+from creation_utils.events import generate_cdr_events
 from creation_utils.exporters import export_cdr
-
 # cdr validation utils
-from validation_utils.analytics import build_summaries, write_summaries
-from validation_utils.graph_export import build_edge_list, export_edges
-from validation_utils.validation import validate_all, write_validation_report
+from validation_utils.summary import build_summaries, export_summaries
+from validation_utils.edge_table import build_edge_list, export_edges
+from validation_utils.validation import validate_all, export_validation_report
 
-config_module = importlib.import_module('creation_utils.config')
+constants_module = importlib.import_module('creation_utils.constants')
 
-# def finalize(all_events):
+def finalize(subscriber_events_map):
+    # summaries
+    summaries = build_summaries(subscriber_events_map)
+    export_summaries(summaries)
 
-#     # summaries
-#     summaries = build_summaries(all_events)
-#     write_summaries(summaries)
+    # edge table
+    edges_rollup = build_edge_list(subscriber_events_map)
+    export_edges(edges_rollup)
 
-#     # graph
-#     edges = build_edge_list(all_events)
-#     export_edges(edges)
-
-#     # validation
-#     report = validate_all(all_events)
-#     write_validation_report(report)
+    # validation
+    report = validate_all(subscriber_events_map)
+    export_validation_report(report)
+    return
 
 def main():
-
-    subscribers = generate_subscribers(config_module, use_provided=True)
-    # print(len(subscribers))
-
+    subscribers = generate_subscribers(constants_module, use_provided=True, output_seeds=True)
     (all_contacts, subscribers) = build_contact_graph(subscribers)
-    print("len all contacts", len(all_contacts))
-    # for i in subscribers:
-    #     print(i.sid, i.role, i.country, i.phone)
-    #     print()
-
     towers = generate_towers()
 
     # map subscriber ID to subscriber object
@@ -55,20 +40,22 @@ def main():
         enriched_contacts.append((id_to_subscriber_map[source_id], id_to_subscriber_map[target_id]))
 
     # generate CDRs
-    for subscriber in subscribers[:]:
+    subscriber_events_map = {}
+    for subscriber in subscribers:
         # get only that subscriber's contacts
         relevant_contacts = [
             t for (s, t) in enriched_contacts if s.sid == subscriber.sid
         ]
         events = generate_cdr_events(subscriber, relevant_contacts[:], towers)
+        if not events:
+            continue
 
-        if events:
-            export_cdr(subscriber, events)
-    
-    # # validate final dataset
-    # finalize(all_events)
+        subscriber_events_map.update({subscriber.sid: events})
+        export_cdr(subscriber, events)
 
+    finalize(subscriber_events_map)
     print("CDR generation complete.")
+    return
 
 if __name__ == "__main__":
     main()

@@ -10,9 +10,11 @@ __pycache__/
 cdr_outputs/
 OLD_cdr_outputs/
 lib/
+outputs*/
+scratch/
 
 # Ignore these files specifically
-discover.ipynb
+scratch.ipynb
 *.html
 notes.txt
 subscribers.json

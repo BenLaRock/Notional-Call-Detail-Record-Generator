@@ -1,7 +1,7 @@
 import random
 import string
 from datetime import timedelta
-from creation_utils.config import START_DATE, END_DATE, US_AREA_CODES
+from creation_utils.constants import START_DATE, END_DATE, US_AREA_CODES
 
 def random_phone_us(area_code=None):
     if not area_code:
@@ -22,7 +22,11 @@ def random_timestamp():
 def random_string(n=6):
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=n))
 
-COUNTRY_PHONE_MAP = {
-    "MX": random_phone_mx,
-    "US": random_phone_us,
-}
+def random_phone_matching_country(country_abbreviation):
+    match country_abbreviation:
+        case "MX":
+            return random_phone_mx()
+        case "US":
+            return random_phone_us()
+        case _:
+            return None
