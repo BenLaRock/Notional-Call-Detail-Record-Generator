@@ -6,12 +6,18 @@ from creation_utils.exporters import export_seed_subscribers
 from creation_utils.constants import ARCHETYPES, Subscriber
 from creation_utils.utils import random_phone_matching_country
 
-def generate_subscribers(config, use_provided=False, output_seeds=False):
+def generate_subscribers(config, use_provided=True, output_seeds=False):
     '''
-    Load existing seed subscribers from JSON if provided or create new seed subscribers.
+    Create new seed subscribers for the archetypes or load existing subscribers from 'seed_subscribers.json' if provided.
+    If 'use_provided=True', JSON file containing subscriber data should be present in the project root (top-level) directory.
     '''
+    
     if use_provided:
-        subscribers = load_subscribers()
+        try:
+            subscribers = load_subscribers()
+        except FileNotFoundError:
+            print("Attempted to import 'seed_subscribers.json' but file does not exist. Created new seed subscribers.")
+            subscribers = create_subscribers(config)
     else:
         subscribers = create_subscribers(config)
     
@@ -27,14 +33,14 @@ def generate_subscribers(config, use_provided=False, output_seeds=False):
 
 def load_subscribers():
     '''
-    Check for 'subscribers.json' in project root directory and load existing subscriber data.
+    Check for 'seed_subscribers.json' in project root directory and load existing subscriber data.
     '''
     # Get directory of current script, then target file at project root
     root_dir = Path(__file__).resolve().parent.parent 
     try:
-        found_json_filename = [f for f in os.listdir() if f.endswith('json') and 'subscribers' in f][0]
+        found_json_filename = [f for f in os.listdir() if f.endswith('json') and 'seed_subscribers' in f][0]
     except IndexError:
-        raise FileNotFoundError('No subscribers.json file in project root directory')
+        raise FileNotFoundError("No 'seed_subscribers.json' file in project root directory")
     
     full_json_path = fr'{root_dir}\{found_json_filename}'
     with open(full_json_path, 'r') as f:

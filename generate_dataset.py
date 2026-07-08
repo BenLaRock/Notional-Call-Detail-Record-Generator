@@ -4,11 +4,12 @@ from creation_utils.subscribers import generate_subscribers
 from creation_utils.contacts import build_contact_graph
 from creation_utils.towers import generate_towers
 from creation_utils.events import generate_cdr_events
-from creation_utils.exporters import export_cdr
+from creation_utils.exporters import create_output_dir, \
+    export_cdr, export_summaries, export_edges, export_validation_report
 # cdr validation utils
-from validation_utils.summary import build_summaries, export_summaries
-from validation_utils.edge_table import build_edge_list, export_edges
-from validation_utils.validation import validate_all, export_validation_report
+from validation_utils.summary import build_summaries
+from validation_utils.edge_table import build_edge_list
+from validation_utils.validation import validate_all
 
 constants_module = importlib.import_module('creation_utils.constants')
 
@@ -27,7 +28,9 @@ def finalize(subscriber_events_map):
     return
 
 def main():
-    subscribers = generate_subscribers(constants_module, use_provided=True, output_seeds=True)
+    create_output_dir()
+
+    subscribers = generate_subscribers(constants_module, use_provided=False, output_seeds=True)
     (all_contacts, subscribers) = build_contact_graph(subscribers)
     towers = generate_towers()
 
@@ -54,7 +57,7 @@ def main():
         export_cdr(subscriber, events)
 
     finalize(subscriber_events_map)
-    print('CDR generation complete')
+    print('CDR dataset generation complete.')
     return
 
 if __name__ == '__main__':

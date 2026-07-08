@@ -1,7 +1,7 @@
 # Notional-Call-Detail-Record-Generator
 A Python tool to generate a dataset of notional call detail records (CDRs).
 
-*Disclaimer: This tool uses random number and string generation to create datapoints such as phone numbers, dates, and identifiers for notional CDR datasets. Any resemblance to actual phone numbers, dates, or identifiers is purely coincidental. Additionally, the scenario presented below is fictional. Archetypes, organizations, places, events, locales, and incidents are either the products of the author's imagination or used in a fictitious manner. Any resemblance to actual persons, living or dead, or actual events is purely coincidental.*
+*Disclaimer: This tool uses random number and string generation to create ficticious phone numbers, dates, and identifiers for notional CDR datasets. Any resemblance to actual phone numbers, dates, or identifiers is purely coincidental. Additionally, the scenario presented below is fictional. Archetypes, organizations, places, events, locales, and incidents are either the products of the author's imagination or used in a fictitious manner. Any resemblance to actual persons, living or dead, or actual events is purely coincidental.*
 
 ## Context
 CDRs - also known as telephone tolls - are commonly used in law enforcement (LE) investigations and crime analysis. Learning how to clean, visualize, and analyze CDRs is a useful skill to develop, however aspiring crime analysts will not have access to CDR data due to the nature and sensitivity of LE operations and  PII involved.
@@ -18,34 +18,104 @@ A drug-trafficking organization (DTO) based in Sonora, Mexico is trafficking ill
 - US-based distributors 
 - US-based pickup drivers
 
-## A Note on Gen AI
-Full disclosure: I worked with an LLM to create this tool (more on that in a minute). However, the LLM was only helpful to a certain point. Even though the scenario above is completely fictional, the LLM would only go so far to help, even though the intent was benign: generating sample data to hone analysis skills that could be applied to a real-world problem (drug trafficking).
-
-I originally prompted the LLM to create just the notional CDR dataset using the scenario above. It was quite eager to do so right up until I asked it to create the actual CSVs. The LLM then halted and essentially said, 'I can't do that because doing so would be assisting an actual law enforcement operation' (paraphrased). 
-
-So I instead asked it to help create a Python tool that could then generate the actual dataset. The LLM agreed to help but only after recasting the drug trafficking scenario to a cross-border logistics coordination scenario. Interestingly, it explained that the original DTO scenario archetypes mapped nearly 1:1 to the new logistics coordination scenario archetypes. The LLM then generated the codebase using the new scenario.
-
-I downloaded the code then manually reverted the scenario (and all variables) back to the original DTO scenario. The AI-generated code was a good start but I had to troubleshoot and refactor most of the code. The initial code could create simple CDRs, with ficticous communication between all of the archetypes, but it could not create random 'noise' that is crucial for realism.
-
-After considerable reworking, the tool now correctly generates random contacts for each archetype with randomly generated pair directionality mappings (A -> B, B -> A, A <-> B), different event types (voice or SMS), and varying numbers of events for each contact
-
 ## Usage
 
-In its current state, the code now generates quality datasets. Certain parameters are easily customizable: number of archetype objects, number of contacts to generate, number of events to generate for each contact, etc. See the constants.py file.
+### Install UV
 
-**generate_dataset.py**
+Install the [UV package manager](https://docs.astral.sh/uv/getting-started/installation/) for Python.
+
+### Clone Repo
+
 ```bash
-python generate_dataset.py
+$ git clone https://github.com/BenLaRock/Notional-Call-Detail-Record-Generator.git
+```
+### Run Script
+
+```bash
+$ cd Notional-Call-Detail-Record-Generator/
+
+$ uv run generate_dataset.py
 ```
 
-## Examples of Outputs
+### Notes
+
+You can reuse the same set of seed subscribers when generating new datasets. You may want to do this so that it's easier to distinguish between the archetype objects and the random contacts in your data, especially when generating large numbers of contacts or multiple new datasets.
+
+First, ensure that the seed subscriber data is saved in a file named 'seed_subscribers.json' and located in the top-level (root) directory of the project repo:
+
+**seed_subscribers.json**
+```
+  {
+        "role": "MX_DTO_LEADER",
+        "id": "DTO_LEADER001",
+        "phone": "+527171809638",
+        "country": "MX"
+    },
+    {
+        "role": "CROSS_BORDER_DRIVER",
+        "id": "CROSS_BORDER_DRIVER001",
+        "phone": "+529296149297",
+        "country": "MX"
+    },
+    {
+        "role": "US_DISTRIBUTOR",
+        "id": "DISTRIBUTOR001",
+        "phone": "+12137093109",
+        "country": "US"
+    },
+    {
+        "role": "US_PICKUP_DRIVER",
+        "id": "PICKUP_DRIVER001",
+        "phone": "+13108123528",
+        "country": "US"
+    },
+    ...
+```
+
+Then set 'use_provided=True' in generate_dataset.py:
+
+**generate_dataset.py**
+```python
+generate_subscribers(constants_module, use_provided=True)
+```
+
+You can also optionally set 'output_seeds=True' in generate_dataset.py which will create a file named 'seed_subscribers.json' in the 'output_<created_at_timestamp>/extras/' directory. You can use this same file for the previous step to reuse a set of seed subscribers:
+
+**generate_dataset.py**
+```python
+generate_subscribers(constants_module, output_seeds=True)
+```
+
+## Outputs
+
 ***Disclaimer: everything shown below and all outputs generated by this tool are completely ficticious.***
 
-### Notional CDR
+### CDR Files
 
-![](./readme_assets/example_cdr.PNG)
+See [sample outputs here](./sample_outputs/call_detail_records/)
 
-### Subscribers JSON
+![](./readme_assets/example_cdr_csv.png)
+
+### Extras: Summaries 
+
+See [sample summary CSV here](./sample_outputs/extras/summaries.csv)
+
+![](./readme_assets/example_summary_csv.PNG)
+
+### Extras: Edge Rollup
+
+See [sample edge rollup CSV here](./sample_outputs/extras/edges_rollup.csv)
+
+![](./readme_assets/example_edge_rollup_csv.PNG)
+
+### Extras: Validation Report
+
+See [sample validation report here](./sample_outputs/extras/validation_report.txt)
+
+### Extras -> Seed Subscribers JSON
+
+See [sample seed subscribers JSON here](./sample_outputs/extras/seed_subscribers.json)
+
 ```
 [
     {
@@ -75,10 +145,18 @@ python generate_dataset.py
     ...
 ]
 ```
-### Pyvis Graph for Single CDR
 
-![](./demo_notebooks/pyvis_graph_for_single_cdr.PNG)
+## What Next?
 
-### Gephi Graph for Entire CDR Dataset
+See [other repos](https://github.com/BenLaRock) for some methods to visualize the datasets.
 
-![](./readme_assets/gephi_graph_outputs_sample_1.PNG)
+## A Note on Gen AI Usage
+Full disclosure: I worked with an LLM to create this tool (more on that in a minute). However, the LLM was only helpful to a certain point. Even though the scenario above is completely fictional, the LLM would only go so far to help, even though the intent was benign: generating sample data to hone analysis skills that could be applied to a real-world problem (drug trafficking).
+
+I originally prompted the LLM to create just the notional CDR dataset using the scenario above. It was quite eager to do so right up until I asked it to create the actual CSVs. The LLM then halted and essentially said, 'I can't do that because doing so would be assisting an actual law enforcement operation' (paraphrased). 
+
+So I instead asked it to help create a Python tool that could then generate the actual dataset. The LLM agreed to help but only after recasting the drug trafficking scenario to a cross-border logistics coordination scenario. Interestingly, it explained that the original DTO scenario archetypes mapped nearly 1:1 to the new logistics coordination scenario archetypes. The LLM then generated the codebase using the new scenario.
+
+I downloaded the code then manually reverted the scenario (and all variables) back to the original DTO scenario. The AI-generated code was a good start but I had to troubleshoot and refactor most of the code. The initial code could create simple CDRs, with ficticous communication between all of the archetypes, but it could not create random 'noise' that is crucial for realism.
+
+After considerable reworking, the tool now correctly generates random contacts for each archetype with randomly generated pair directionality mappings (A -> B, B -> A, A <-> B), different event types (voice or SMS), and varying numbers of events for each contact

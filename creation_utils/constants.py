@@ -118,7 +118,5 @@ ARCHETYPES = {
 
 # ---------- Misc ----------
 TOP_LEVEL_OUTPUT_DIR = 'outputs'
-CDR_OUTPUT_DIR = 'notional_call_detail_records'
+CDR_OUTPUT_DIR = 'call_detail_records'
 EXTRAS_OUTPUT_DIR = 'extras'
-FULL_CDR_OUTPUT_DIR = f'{TOP_LEVEL_OUTPUT_DIR}/{CDR_OUTPUT_DIR}'
-FULL_EXTRAS_OUTPUT_DIR = f'{TOP_LEVEL_OUTPUT_DIR}/{EXTRAS_OUTPUT_DIR}'

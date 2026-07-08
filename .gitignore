@@ -1,20 +1,22 @@
-# Ignore all __pycache__ directories recursively
+# UV virtual environments
+.venv/
+
+# Python build artifacts
 __pycache__/
-
-# Ignore any compiled Python files that sneak out
 *.py[cod]
+*.py[oc]
 *$py.class
+build/
+dist/
+wheels/
+*.egg-info/
 
-
-# Everything in these directories
-cdr_outputs/
-OLD_cdr_outputs/
+# Everything in these project directories
 lib/
-outputs*/
-scratch/
+*outputs*/
 
-# Ignore these files specifically
-scratch.ipynb
-*.html
-notes.txt
-subscribers.json
+# These specific files
+seed_subscribers.json
+
+# But don't ignore (include) this directory
+!sample_outputs/
