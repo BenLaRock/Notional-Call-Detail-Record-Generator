@@ -39,6 +39,8 @@ $ uv run generate_dataset.py
 
 ### Notes
 
+#### Reuse Seed Subscribers
+
 You can reuse the same set of seed subscribers when generating new datasets. You may want to do this so that it's easier to distinguish between the archetype objects and the random contacts in your data, especially when generating large numbers of contacts or multiple new datasets.
 
 First, ensure that the seed subscriber data is saved in a file named 'seed_subscribers.json' and located in the top-level (root) directory of the project repo:
@@ -74,18 +76,60 @@ First, ensure that the seed subscriber data is saved in a file named 'seed_subsc
 ]
 ```
 
-Then set 'use_provided=True' in generate_dataset.py:
+Then set 'use_provided=True' in [generate_dataset.py](/generate_dataset.py):
 
-**generate_dataset.py**
 ```python
 generate_subscribers(constants_module, use_provided=True)
 ```
 
-You can also optionally set 'output_seeds=True' in generate_dataset.py which will create a file named 'seed_subscribers.json' in the 'output_<created_at_timestamp>/extras/' directory. You can use this same file for the previous step to reuse a set of seed subscribers:
+You can also optionally set 'output_seeds=True' in [generate_dataset.py](/generate_dataset.py) which will create a file named 'seed_subscribers.json' in the 'output_<created_at_timestamp>/extras/' directory. You can use this same file for the previous step to reuse a set of seed subscribers:
 
-**generate_dataset.py**
 ```python
 generate_subscribers(constants_module, output_seeds=True)
+```
+#### Modify Script Parameters
+
+You can easily change a number of hard-coded parameters in [constants.py](./creation_utils/constants.py) including:
+
+- temporal window
+- geographic boundaries
+- area codes
+- number of each archetype to create
+- min/max contacts allowed for archetypes
+- min/max number of events allowed between archetypes and contacts
+
+Simply update these values in [constants.py](./creation_utils/constants.py):
+
+```python
+# ---------- Time and geo bounds ----------
+START_DATE = datetime(2026, 1, 1)
+END_DATE   = datetime(2026, 6, 30)
+
+MEXICO_COUNTRY_CODE = '+52'
+US_COUNTRY_CODE = '+1'
+
+US_AREA_CODES = [
+    '213', # CA Los Angeles downtown
+    '310', # CA Los Angeles county 
+    '323', # CA Los Angeles central
+    '602', # AZ Phoenix
+    '520', # AZ southern, greater Tucson
+]
+...
+# ---------- Archetype parameters ----------
+NUM_MX_DTO_LEADERSHIP = 3
+NUM_CROSS_BORDER_DRIVERS = 6
+NUM_US_DISTRIBUTORS = 4
+NUM_US_PICKUP_DRIVERS = 6
+
+MIN_CONTACTS = 15
+MAX_CONTACTS = 50
+
+MIN_EVENTS_PER_CONTACT = 15
+MAX_EVENTS_PER_CONTACT = 300
+
+VOICE_RATIO = 0.6
+SMS_RATIO = 0.4
 ```
 
 ## Outputs
