@@ -45,31 +45,33 @@ First, ensure that the seed subscriber data is saved in a file named 'seed_subsc
 
 **seed_subscribers.json**
 ```
-  {
-        "role": "MX_DTO_LEADER",
-        "id": "DTO_LEADER001",
-        "phone": "+527171809638",
-        "country": "MX"
+[
+    {
+        'role': 'MX_DTO_LEADER',
+        'id': 'DTO_LEADER001',
+        'phone': '+527171809638',
+        'country': 'MX'
     },
     {
-        "role": "CROSS_BORDER_DRIVER",
-        "id": "CROSS_BORDER_DRIVER001",
-        "phone": "+529296149297",
-        "country": "MX"
+        'role': 'CROSS_BORDER_DRIVER',
+        'id': 'CROSS_BORDER_DRIVER001',
+        'phone': '+529296149297',
+        'country': 'MX'
     },
     {
-        "role": "US_DISTRIBUTOR",
-        "id": "DISTRIBUTOR001",
-        "phone": "+12137093109",
-        "country": "US"
+        'role': 'US_DISTRIBUTOR',
+        'id': 'DISTRIBUTOR001',
+        'phone': '+12137093109',
+        'country': 'US'
     },
     {
-        "role": "US_PICKUP_DRIVER",
-        "id": "PICKUP_DRIVER001",
-        "phone": "+13108123528",
-        "country": "US"
+        'role': 'US_PICKUP_DRIVER',
+        'id': 'PICKUP_DRIVER001',
+        'phone': '+13108123528',
+        'country': 'US'
     },
     ...
+]
 ```
 
 Then set 'use_provided=True' in generate_dataset.py:
@@ -94,7 +96,7 @@ generate_subscribers(constants_module, output_seeds=True)
 
 See [sample outputs here](./sample_outputs/call_detail_records/)
 
-![](./readme_assets/example_cdr_csv.png)
+![](./readme_assets/example_cdr_csv.PNG)
 
 ### Extras: Summaries 
 
@@ -113,8 +115,6 @@ See [sample edge rollup CSV here](./sample_outputs/extras/edges_rollup.csv)
 See [sample validation report here](./sample_outputs/extras/validation_report.txt)
 
 ### Extras -> Seed Subscribers JSON
-
-See [sample seed subscribers JSON here](./sample_outputs/extras/seed_subscribers.json)
 
 ```
 [
