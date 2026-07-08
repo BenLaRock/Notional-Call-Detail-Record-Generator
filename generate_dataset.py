@@ -54,8 +54,8 @@ def main():
         export_cdr(subscriber, events)
 
     finalize(subscriber_events_map)
-    print("CDR generation complete.")
+    print('CDR generation complete')
     return
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
