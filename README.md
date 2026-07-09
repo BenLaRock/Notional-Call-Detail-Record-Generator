@@ -49,28 +49,28 @@ First, ensure that the seed subscriber data is saved in a file named 'seed_subsc
 ```
 [
     {
-        'role': 'MX_DTO_LEADER',
-        'id': 'DTO_LEADER001',
-        'phone': '+527171809638',
-        'country': 'MX'
+        "role": "MX_DTO_LEADER",
+        "id": "DTO_LEADER001",
+        "phone": "+527171809638",
+        "country": "MX"
     },
     {
-        'role': 'CROSS_BORDER_DRIVER',
-        'id': 'CROSS_BORDER_DRIVER001',
-        'phone': '+529296149297',
-        'country': 'MX'
+        "role": "CROSS_BORDER_DRIVER",
+        "id": "CROSS_BORDER_DRIVER001",
+        "phone": "+529296149297",
+        "country": "MX"
     },
     {
-        'role': 'US_DISTRIBUTOR',
-        'id': 'DISTRIBUTOR001',
-        'phone': '+12137093109',
-        'country': 'US'
+        "role": "US_DISTRIBUTOR",
+        "id": "DISTRIBUTOR001",
+        "phone": "+12137093109",
+        "country": "US"
     },
     {
-        'role': 'US_PICKUP_DRIVER',
-        'id': 'PICKUP_DRIVER001',
-        'phone': '+13108123528',
-        'country': 'US'
+        "role": "US_PICKUP_DRIVER",
+        "id": "PICKUP_DRIVER001",
+        "phone": "+13108123528",
+        "country": "US"
     },
     ...
 ]
@@ -163,28 +163,28 @@ See [sample validation report here](./sample_outputs/extras/validation_report.tx
 ```
 [
     {
-        'role': 'MX_DTO_LEADER',
-        'id': 'DTO_LEADER001',
-        'phone': '+527171809638',
-        'country': 'MX'
+        "role": "MX_DTO_LEADER",
+        "id": "DTO_LEADER001",
+        "phone": "+527171809638",
+        "country": "MX"
     },
     {
-        'role': 'CROSS_BORDER_DRIVER',
-        'id': 'CROSS_BORDER_DRIVER001',
-        'phone': '+529296149297',
-        'country': 'MX'
+        "role": "CROSS_BORDER_DRIVER",
+        "id": "CROSS_BORDER_DRIVER001",
+        "phone": "+529296149297",
+        "country": "MX"
     },
     {
-        'role': 'US_DISTRIBUTOR',
-        'id': 'DISTRIBUTOR001',
-        'phone': '+12137093109',
-        'country': 'US'
+        "role": "US_DISTRIBUTOR",
+        "id": "DISTRIBUTOR001",
+        "phone": "+12137093109",
+        "country": "US"
     },
     {
-        'role': 'US_PICKUP_DRIVER',
-        'id': 'PICKUP_DRIVER001',
-        'phone': '+13108123528',
-        'country': 'US'
+        "role": "US_PICKUP_DRIVER",
+        "id": "PICKUP_DRIVER001",
+        "phone": "+13108123528",
+        "country": "US"
     },
     ...
 ]
